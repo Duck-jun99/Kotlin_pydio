@@ -9,3 +9,5 @@ The database server using [pydio cell] is configured by installing [termux] on a
 * The ultimate goal is to load the files in the configured database into this application.
 
 * The above codes are written to study [Kotlin], [REST API], and [Pydio Library].
+
+### This code requires your own Personal Access Token to access the database!
