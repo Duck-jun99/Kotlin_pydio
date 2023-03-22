@@ -1,34 +1,38 @@
 package com.kotlinstudy.kotlin_pydio
 
+import com.kotlinstudy.kotlin_pydio.Ignore_SSL.getUnsafeOkHttpClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Header
+
+interface MyServerPydioService {
+    @GET("files")
+    suspend fun getFiles(@Header("Authorization") token: String): Call<List<String>>
+}
 
 class MyServerPydio {
-    fun getFiles(): List<String> {
-        val client = OkHttpClient()
-        val request: Request = Request.Builder()
-            .url("myserver")
-            .get()
-            .addHeader("admin", "Bearer My_access_token")
-            .build()
-        try {
-            val response: Response = client.newCall(request).execute()
-            if (response.isSuccessful) {
-                val responseBody = response.body?.string()
-                val json = JSONObject(responseBody)
-                val files = json.getJSONArray("data")
-                val fileNames = mutableListOf<String>()
-                for (i in 0 until files.length()) {
-                    val file = files.getJSONObject(i)
-                    fileNames.add(file.getString("filename"))
-                }
-                return fileNames
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://192.168.0.6:8080/")
+        .client(getUnsafeOkHttpClient().build())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val service = retrofit.create(MyServerPydioService::class.java)
+
+    suspend fun getFiles(token: String): List<String>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                service.getFiles("Bearer &accessToken")
+                    .execute().body()
+            } catch (e: Exception) {
+                null
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
-        return emptyList()
     }
 }
+
