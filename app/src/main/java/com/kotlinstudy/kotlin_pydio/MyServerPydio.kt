@@ -17,7 +17,7 @@ interface MyServerPydioService {
 
 class MyServerPydio {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://192.168.0.6:8080/")
+        .baseUrl("MY_URL")
         .client(getUnsafeOkHttpClient().build())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -27,7 +27,7 @@ class MyServerPydio {
     suspend fun getFiles(token: String): List<String>? {
         return withContext(Dispatchers.IO) {
             try {
-                service.getFiles("Bearer &accessToken")
+                service.getFiles("Bearer &token")
                     .execute().body()
             } catch (e: Exception) {
                 null

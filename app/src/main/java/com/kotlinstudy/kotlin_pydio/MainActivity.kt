@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fileTextView: TextView
     private lateinit var server: MyServerPydio
-    private val accessToken = "My_ACCESS_TOKEN"
+    private val accessToken = "MY_ACCESS_TOKEN"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

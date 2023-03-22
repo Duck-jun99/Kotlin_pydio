@@ -1,12 +1,7 @@
 package com.kotlinstudy.kotlin_pydio;
 
-import android.net.http.SslError;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import java.security.cert.CertificateException;
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
