@@ -12,12 +12,12 @@ import retrofit2.http.Header
 
 interface MyServerPydioService {
     @GET("files")
-    suspend fun getFiles(@Header("Authorization") token: String): Call<List<String>>
+    suspend fun getFiles(@Header("Authorization") token: String): List<String>
 }
 
 class MyServerPydio {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("MY_URL")
+        .baseUrl("https://192.168.0.6:8080/")
         .client(getUnsafeOkHttpClient().build())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -28,7 +28,6 @@ class MyServerPydio {
         return withContext(Dispatchers.IO) {
             try {
                 service.getFiles("Bearer &token")
-                    .execute().body()
             } catch (e: Exception) {
                 null
             }
